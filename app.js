@@ -976,7 +976,7 @@ function initTheme() {
 
   const apply = light => {
     body.classList.toggle('light', light);
-    btn.textContent = light ? '🌕' : '🌙';
+    btn.textContent = light ? '🌕 Dark Mode' : '🌙 Light Mode';
   };
 
   apply(localStorage.getItem('theme') === 'light');

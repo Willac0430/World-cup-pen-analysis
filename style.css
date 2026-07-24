@@ -14,12 +14,12 @@
 }
 
 body.light {
-  --bg:          #f2f4f0;
-  --surface:     #ffffff;
-  --surface2:    #eaecea;
-  --border:      #d0d8d2;
-  --text:        #152018;
-  --text-muted:  #5a7a62;
+  --bg:          #EBEBEB;
+  --surface:     #F5F5F5;
+  --surface2:    #DCDCDC;
+  --border:      #C4C4C4;
+  --text:        #141414;
+  --text-muted:  #6B6B6B;
   --green:       #16a34a;
   --red:         #dc2626;
   --accent:      #16a34a;
@@ -68,12 +68,13 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 17px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
   color: var(--text);
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .header-live {
@@ -840,7 +841,7 @@ tbody tr.row-pending  { opacity: 0.5; }
 .stutter-conv-fill.bad  { background: var(--red); }
 
 /* ── Light theme overrides (hardcoded dark colors) ──────────────────────────── */
-body.light .tooltip                { background: #ffffffee; }
+body.light .tooltip                { background: #F5F5F5ee; }
 body.light tbody tr.row-selected   { background: #dcfce7; box-shadow: inset 3px 0 0 var(--accent); }
 body.light .badge-ingame           { background: #dcfce7; color: #15803d; }
 body.light .badge-shootout         { background: #ede9fe; color: #7c3aed; }
