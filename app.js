@@ -988,6 +988,18 @@ function initTheme() {
   });
 }
 
+// ── xGOT info popup ───────────────────────────────────────────────────────────
+function initXGOTInfo() {
+  const btn   = document.getElementById('xGOTInfoBtn');
+  const popup = document.getElementById('xGOTPopup');
+  if (!btn || !popup) return;
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+  });
+  document.addEventListener('click', () => { popup.style.display = 'none'; });
+}
+
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   drawGoalFrame();
@@ -996,5 +1008,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTableSort();
   initGroupToggle();
   initTheme();
+  initXGOTInfo();
   refresh();
 });
