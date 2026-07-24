@@ -872,18 +872,62 @@ body.light .powerbi-badge          { background: #1e3a5f; }
   .sidebar .panel { flex: 1; min-width: 180px; }
   .charts-grid { grid-template-columns: 1fr; }
   .charts-full { grid-column: auto; }
-  .stutter-cards { flex-direction: column; }
 }
 
 @media (max-width: 700px) {
+  /* Layout */
   .main { padding: 12px; gap: 10px; }
+
+  /* Header */
+  .header { padding: 0 12px; height: auto; min-height: 54px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
+  .header-title { position: static; transform: none; font-size: 13px; order: 3; width: 100%; text-align: center; padding-bottom: 4px; }
+  .theme-toggle { font-size: 11px; padding: 3px 8px; }
+
+  /* KPI — 3 cols, 2 rows, show all 6 */
   .kpi-strip { grid-template-columns: repeat(3, 1fr); }
-  .kpi-strip .kpi-card:nth-child(4),
+  .kpi-num { font-size: 26px; letter-spacing: -1px; }
+  .kpi-card { padding: 12px 10px 10px; }
+  .kpi-label { font-size: 9px; }
+
+  /* Filters — stack groups vertically */
+  .filters-inner { flex-direction: column; align-items: stretch; gap: 10px; }
+  .filter-group { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .filter-label { min-width: 64px; }
+  .toggle-group { flex-wrap: wrap; border-radius: 8px; }
+  .player-search { width: 170px; }
+  .range-input { width: 54px; }
+
+  /* Table — keep #, Taker, Team, Result, xGOT */
+  .col-match                         { display: none; } /* Match (th + td share class) */
+  th:nth-child(2), td:nth-child(2)   { display: none; } /* Type */
+  th:nth-child(7), td:nth-child(7)   { display: none; } /* Technique */
+  th:nth-child(9), td:nth-child(9)   { display: none; } /* Position */
+  th:nth-child(10), td:nth-child(10) { display: none; } /* Age */
+  th:nth-child(11), td:nth-child(11) { display: none; } /* Club PKs */
+
+  /* Charts */
+  .chart-bars { height: 130px; }
+  .legend { gap: 8px; }
+  .legend-note { display: none; }
+  .stutter-cards { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  /* Header: single-line shorter title */
+  .header-title { font-size: 11px; }
+
+  /* KPI: 2 cols, hide last 2 */
+  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
   .kpi-strip .kpi-card:nth-child(5),
   .kpi-strip .kpi-card:nth-child(6) { display: none; }
-  .filters-inner { gap: 10px; }
-  .filter-group { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .header-title { font-size: 13px; }
-  .col-match { display: none; }
-  .legend-note { display: none; }
+  .kpi-num { font-size: 22px; }
+
+  /* Table: also hide Team */
+  th:nth-child(4), td:nth-child(4) { display: none; }
+
+  /* Tighten everything further */
+  .main { padding: 8px; gap: 8px; }
+  .panel-body { padding: 10px 12px; }
+  td, th { padding: 8px 8px; }
+  .filters-inner { gap: 8px; }
 }

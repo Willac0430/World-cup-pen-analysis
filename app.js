@@ -979,7 +979,7 @@ function initTheme() {
     btn.textContent = light ? '🌕 Dark Mode' : '🌙 Light Mode';
   };
 
-  apply(localStorage.getItem('theme') === 'light');
+  apply(localStorage.getItem('theme') !== 'dark');
 
   btn.addEventListener('click', () => {
     const isLight = !body.classList.contains('light');
