@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Cup 2026 – Penalty Insights</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-brand">⚽ <span>WC 2026</span></div>
+    <h1 class="header-title">Penalty Insights</h1>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+      <div class="header-live"><span class="live-dot"></span>Live</div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ── KPI Strip ── -->
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-num" id="kpiTotal">—</div>
+        <div class="kpi-label">Penalties</div>
+      </div>
+      <div class="kpi-card kpi-highlight">
+        <div class="kpi-num" id="kpiConversion">—</div>
+        <div class="kpi-label">Conversion Rate</div>
+      </div>
+      <div class="kpi-card kpi-failed">
+        <div class="kpi-num" id="kpiOffTarget">—</div>
+        <div class="kpi-label">Missed / Post & Bar</div>
+      </div>
+      <div class="kpi-card kpi-highlight">
+        <div class="kpi-num" id="kpiAvgXGOT">—</div>
+        <div class="kpi-label">Avg xGOT</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num" id="kpiAvgAge">—</div>
+        <div class="kpi-label">Median Age</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num" id="kpiAvgClubPKs">—</div>
+        <div class="kpi-label">Median Club PKs</div>
+      </div>
+    </div>
+
+    <!-- ── Filters panel ── -->
+    <div class="panel filters-panel">
+      <div class="panel-title-bar">Filters</div>
+      <div class="filters-inner">
+        <div class="filter-group">
+          <span class="filter-label">Outcome</span>
+          <div class="toggle-group" id="outcomeFilter">
+            <button class="toggle active" data-value="all">All</button>
+            <button class="toggle" data-value="Scored">Scored</button>
+            <button class="toggle" data-value="Failed">Failed</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Technique</span>
+          <div class="toggle-group" id="stutterFilter">
+            <button class="toggle active" data-value="all">All</button>
+            <button class="toggle" data-value="true">Stutter</button>
+            <button class="toggle" data-value="false">Normal</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Type</span>
+          <div class="toggle-group" id="typeFilter">
+            <button class="toggle active" data-value="all">All</button>
+            <button class="toggle" data-value="In-game">In-Game</button>
+            <button class="toggle" data-value="Shootout">Shootout</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Player</span>
+          <div class="search-wrapper">
+            <input type="text" id="playerSearch" placeholder="Search players…" class="player-search" autocomplete="off">
+            <button class="search-clear" id="playerClear" style="display:none;" aria-label="Clear">×</button>
+            <ul class="player-dropdown" id="playerDropdown"></ul>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Min xGOT</span>
+          <div class="slider-group">
+            <input type="range" id="xGOTSlider" min="0" max="1" step="0.01" value="0" class="xgot-slider">
+            <span id="xGOTLabel" class="slider-label">0.00</span>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Position</span>
+          <div class="toggle-group" id="positionFilter">
+            <button class="toggle active" data-value="all">All</button>
+            <button class="toggle" data-value="Forward">Forward</button>
+            <button class="toggle" data-value="Midfielder">Midfielder</button>
+            <button class="toggle" data-value="Defense">Defense</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Age</span>
+          <div class="range-group">
+            <input type="number" id="ageMin" class="range-input" placeholder="Min" min="0" max="99">
+            <span class="range-sep">–</span>
+            <input type="number" id="ageMax" class="range-input" placeholder="Max" min="0" max="99">
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Club PKs</span>
+          <div class="range-group">
+            <input type="number" id="pkMin" class="range-input" placeholder="Min" min="0">
+            <span class="range-sep">–</span>
+            <input type="number" id="pkMax" class="range-input" placeholder="Max" min="0">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Dashboard grid ── -->
+    <div class="dashboard-grid">
+
+      <!-- Shot map panel -->
+      <div class="panel map-panel">
+        <div class="panel-title-bar">
+          Shot Map
+          <span class="map-stat map-stat-scored">✓ <span id="mapScored">—</span> Scored</span>
+          <span class="map-stat map-stat-failed">✗ <span id="mapFailed">—</span> Failed</span>
+        </div>
+        <div class="panel-body">
+          <div class="goal-container">
+            <!--
+              SVG coordinate space = FotMob shot coordinate space: viewBox "0 0 2 0.68"
+                x: 0 = outer face of left post  →  2 = outer face of right post
+                y: 0 = outer face of crossbar   →  0.68 = ground
+            -->
+            <svg id="goalSvg"
+                 viewBox="-0.20 -0.20 2.40 1.00"
+                 xmlns="http://www.w3.org/2000/svg"
+                 aria-label="Goal map showing penalty placement">
+              <rect x="-0.20" y="-0.20" width="2.40" height="1.00" fill="#0d1a0d"/>
+              <g id="netBg"></g>
+              <g id="netVertical"   stroke="#1a361a" stroke-width="0.007" opacity="0.9"></g>
+              <g id="netHorizontal" stroke="#1a361a" stroke-width="0.007" opacity="0.9"></g>
+              <rect x="-0.20" y="0.68" width="2.40" height="0.12" fill="#163a16"/>
+              <rect x="-0.20" y="0.68" width="2.40" height="0.016" fill="#1f5c1f"/>
+              <g id="goalFrame"></g>
+              <g id="penaltyDots"></g>
+            </svg>
+
+            <!-- Hover tooltip -->
+            <div class="tooltip" id="tooltip" style="display:none;">
+              <div class="tooltip-header">
+                <span class="tooltip-player" id="ttPlayer"></span>
+                <span class="tooltip-team"   id="ttTeam"></span>
+              </div>
+              <div class="tooltip-body">
+                <div class="tt-row"><span class="tt-label">Position</span><span id="ttPosition"></span></div>
+                <div class="tt-row"><span class="tt-label">Age</span><span id="ttAge"></span></div>
+                <div class="tt-row"><span class="tt-label">Match</span><span id="ttMatch"></span></div>
+                <div class="tt-row"><span class="tt-label">Result</span><span id="ttResult"></span></div>
+                <div class="tt-row"><span class="tt-label">Technique</span><span id="ttStutter"></span></div>
+                <div class="tt-row" id="ttNoteRow"   style="display:none;"><span class="tt-label">Note</span><span id="ttNote"></span></div>
+                <div class="tt-row" id="ttTimeRow"   style="display:none;"><span class="tt-label">Run-up</span><span id="ttTime"></span></div>
+                <div class="tt-row tt-xgot" id="ttXGOTRow" style="display:none;">
+                  <span class="tt-label">xGOT</span>
+                  <div class="xgot-container">
+                    <div class="xgot-bar"><div class="xgot-fill" id="ttXGOTFill"></div></div>
+                    <span class="xgot-value" id="ttXGOTVal"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legend -->
+          <div class="legend">
+            <div class="legend-group">
+              <div class="legend-item">
+                <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="#22c55e" stroke="#fff" stroke-width="1.5"/></svg>
+                <span>Scored</span>
+              </div>
+              <div class="legend-item">
+                <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/></svg>
+                <span>Failed</span>
+              </div>
+            </div>
+            <div class="legend-divider"></div>
+            <div class="legend-group">
+              <div class="legend-item">
+                <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="#888" stroke="#fff" stroke-width="1.5"/></svg>
+                <span>Normal</span>
+              </div>
+              <div class="legend-item">
+                <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="#888" stroke="#fff" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+                <span>Stutter</span>
+              </div>
+            </div>
+            <div class="legend-note">Dots without placement data appear in table only</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar breakdown panels -->
+      <div class="sidebar">
+        <div class="panel">
+          <div class="panel-title-bar">Outcome</div>
+          <div class="panel-body" id="outcomeBreakdown"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title-bar">Technique</div>
+          <div class="panel-body" id="techniqueBreakdown"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title-bar">Type</div>
+          <div class="panel-body" id="typeBreakdown"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Penalty table ── -->
+    <div class="panel table-panel">
+      <div class="panel-title-bar">All Penalties</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="id">#</th>
+              <th data-sort="type">Type</th>
+              <th data-sort="taker">Taker</th>
+              <th data-sort="team">Team</th>
+              <th data-sort="match" class="col-match">Match</th>
+              <th data-sort="result">Result</th>
+              <th data-sort="stutter">Technique</th>
+              <th data-sort="xGOT">xGOT</th>
+              <th data-sort="position">Position</th>
+              <th data-sort="age">Age</th>
+              <th data-sort="pkScored">Club PKs</th>
+            </tr>
+          </thead>
+          <tbody id="penaltiesBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Charts ── -->
+    <div class="charts-grid">
+
+      <div class="panel chart-panel charts-full">
+        <div class="panel-title-bar">
+          <div class="toggle-group" id="groupToggle">
+            <button class="toggle active" data-value="age">Penalties by Age Group</button>
+            <button class="toggle" data-value="position">Penalties by Position</button>
+          </div>
+          <div class="chart-legend">
+            <span class="chart-legend-item chart-legend-scored">Scored</span>
+            <span class="chart-legend-item chart-legend-failed">Failed</span>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="ageChartWrap">
+            <div class="bar-chart" id="ageChart"></div>
+          </div>
+          <div id="positionChartWrap" style="display:none">
+            <div class="bar-chart" id="positionChart"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel chart-panel">
+        <div class="panel-title-bar">
+          Club PKs vs Avg xGOT
+          <div class="chart-legend">
+            <span class="chart-legend-item" style="color:#22c55e">&#9679; ≥ 0.75</span>
+            <span class="chart-legend-item" style="color:#f59e0b">&#9679; 0.50 – 0.74</span>
+            <span class="chart-legend-item" style="color:#ef4444">&#9679; &lt; 0.50</span>
+          </div>
+        </div>
+        <div class="panel-body" id="correlationChart"></div>
+      </div>
+
+      <div class="panel chart-panel">
+        <div class="panel-title-bar">Conversion Rate by Tournament Stage</div>
+        <div class="panel-body" id="stageChart"></div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="players.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
