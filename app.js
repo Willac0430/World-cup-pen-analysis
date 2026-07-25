@@ -158,7 +158,7 @@ function matchesFilters(p) {
 
 function resultIcon(result) {
   if (result === 'Scored' || result === 'Scored on retake') return '✓';
-  if (result === 'Saved')    return 'S';
+  if (result === 'Saved')    return '';
   if (result === 'Crossbar') return '―';
   if (result === 'Post')     return '|';
   return '✗';
@@ -484,7 +484,7 @@ function renderTable(filtered) {
       <td class="col-taker">${p.taker}</td>
       <td>${p.team}</td>
       <td class="col-match">${p.match}</td>
-      <td><span class="result-pill ${p.outcome === 'Scored' ? 'pill-scored' : 'pill-failed'}">${resultIcon(p.result)} ${p.result}</span></td>
+      <td><span class="result-pill ${p.outcome === 'Scored' ? 'pill-scored' : 'pill-failed'}">${resultIcon(p.result) ? resultIcon(p.result) + ' ' : ''}${p.result}</span></td>
       <td>${p.stutter ? '<span class="stutter-yes">Stutter</span>' : '<span class="stutter-no">Normal</span>'}</td>
       <td class="col-xgot">${xgotCell}</td>
       <td>${posCell}</td>
