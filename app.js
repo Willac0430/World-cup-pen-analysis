@@ -274,8 +274,9 @@ function showTooltip(e, id) {
   const pd = PLAYER_DATA[p.taker] || {};
   document.getElementById('ttPlayer').textContent   = p.taker;
   document.getElementById('ttTeam').textContent     = p.team;
-  document.getElementById('ttPosition').textContent = pd.position || '—';
-  document.getElementById('ttAge').textContent      = pd.age != null ? pd.age : '—';
+  document.getElementById('ttPosition').textContent  = pd.position || '—';
+  document.getElementById('ttAge').textContent       = pd.age != null ? pd.age : '—';
+  document.getElementById('ttClubPKs').textContent   = pd.pk_scored != null ? pd.pk_scored : '—';
   document.getElementById('ttMatch').textContent    = p.match;
 
   const resultEl = document.getElementById('ttResult');
