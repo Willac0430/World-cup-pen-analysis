@@ -253,13 +253,13 @@ function renderDots(filtered) {
   g.querySelectorAll('.penalty-dot').forEach(el => {
     const id = Number(el.dataset.id);
     el.addEventListener('mouseenter', e => showTooltip(e, id));
+    el.addEventListener('mouseleave', hideTooltip);
     el.addEventListener('touchstart', e => {
       e.stopPropagation();
       const t = e.touches[0];
       showTooltip({ clientX: t.clientX, clientY: t.clientY }, id);
     }, { passive: true });
-    el.addEventListener('click', e => {
-      e.stopPropagation();
+    el.addEventListener('click', () => {
       selectedId = selectedId === id ? null : id;
       refresh();
     });
