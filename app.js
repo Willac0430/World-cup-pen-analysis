@@ -1021,11 +1021,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initXGOTInfo();
   refresh();
 
-  document.getElementById('tooltipClose').addEventListener('click', e => {
-    e.stopPropagation();
-    hideTooltip();
-  });
-
   document.addEventListener('click', e => {
     if (!e.target.closest('.penalty-dot')) hideTooltip();
   });

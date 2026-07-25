@@ -454,18 +454,6 @@ body.light .map-stat-failed  { background: #fee2e2; color: #b91c1c; }
   border-bottom: 1px solid var(--border);
 }
 
-.tooltip-close {
-  margin-left: auto;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0 0 0 8px;
-  flex-shrink: 0;
-}
-.tooltip-close:hover { color: var(--text); }
 
 .tooltip-player { font-weight: 800; font-size: 14px; }
 
