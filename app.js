@@ -251,15 +251,17 @@ function renderDots(filtered) {
   });
 
   g.querySelectorAll('.penalty-dot').forEach(el => {
-    el.addEventListener('mouseenter', e => { if (!touchActive) showTooltip(e, Number(el.dataset.id)); });
-    el.addEventListener('mouseleave',    () => { if (!touchActive) hideTooltip(); });
-    el.addEventListener('click', e => {
-      selectedId = selectedId === Number(el.dataset.id) ? null : Number(el.dataset.id);
+    const id = Number(el.dataset.id);
+    el.addEventListener('mouseenter', e => showTooltip(e, id));
+    el.addEventListener('mouseleave', hideTooltip);
+    el.addEventListener('touchstart', e => {
+      e.stopPropagation();
+      const t = e.touches[0];
+      showTooltip({ clientX: t.clientX, clientY: t.clientY }, id);
+    }, { passive: true });
+    el.addEventListener('click', () => {
+      selectedId = selectedId === id ? null : id;
       refresh();
-      if (touchActive) {
-        e.stopPropagation();
-        showTooltip(e, Number(el.dataset.id));
-      }
     });
   });
 }
@@ -335,9 +337,6 @@ function hideTooltip() {
   document.getElementById('tooltip').style.display = 'none';
 }
 
-let touchActive = false;
-document.addEventListener('touchstart', () => { touchActive = true; }, { passive: true });
-document.addEventListener('mousemove',  () => { touchActive = false; });
 
 // ── KPI cards ─────────────────────────────────────────────────────────────────
 function renderKPIs(filtered) {
@@ -1029,4 +1028,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', e => {
     if (!e.target.closest('.penalty-dot')) hideTooltip();
   });
+  document.addEventListener('touchstart', e => {
+    if (!e.target.closest('.penalty-dot')) hideTooltip();
+  }, { passive: true });
 });
