@@ -127,6 +127,7 @@ body {
 }
 .map-stat-scored { background: #0b2914; color: var(--green); }
 .map-stat-failed  { background: #300808; color: var(--red); }
+.map-stat-mobile  { background: var(--surface2); color: var(--text-muted); display: none; }
 body.light .map-stat-scored { background: #dcfce7; color: #15803d; }
 body.light .map-stat-failed  { background: #fee2e2; color: #b91c1c; }
 
@@ -452,6 +453,19 @@ body.light .map-stat-failed  { background: #fee2e2; color: #b91c1c; }
   padding-bottom: 7px;
   border-bottom: 1px solid var(--border);
 }
+
+.tooltip-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0 0 8px;
+  flex-shrink: 0;
+}
+.tooltip-close:hover { color: var(--text); }
 
 .tooltip-player { font-weight: 800; font-size: 14px; }
 
@@ -946,6 +960,9 @@ body.light .powerbi-badge          { background: #1e3a5f; }
   th:nth-child(9), td:nth-child(9)   { display: none; } /* Position */
   th:nth-child(10), td:nth-child(10) { display: none; } /* Age */
   th:nth-child(11), td:nth-child(11) { display: none; } /* Club PKs */
+
+  /* Mobile-only shot map stats */
+  .map-stat-mobile { display: inline-block; }
 
   /* Charts */
   .chart-bars { height: 130px; }

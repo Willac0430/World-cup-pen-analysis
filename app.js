@@ -331,6 +331,10 @@ function hideTooltip() {
   document.getElementById('tooltip').style.display = 'none';
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('tooltipClose').addEventListener('click', hideTooltip);
+});
+
 // ── KPI cards ─────────────────────────────────────────────────────────────────
 function renderKPIs(filtered) {
   const total  = filtered.length;
@@ -359,6 +363,8 @@ function renderKPIs(filtered) {
   document.getElementById('kpiAvgClubPKs').textContent = avgPK;
   document.getElementById('mapScored').textContent     = scored;
   document.getElementById('mapFailed').textContent     = failed;
+  document.getElementById('mapAge').textContent        = `Median Age ${avgAge}`;
+  document.getElementById('mapPKs').textContent        = `Median Club PKs ${avgPK}`;
 }
 
 // ── Breakdown sidebar ──────────────────────────────────────────────────────────
