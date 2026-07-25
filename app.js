@@ -1029,6 +1029,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!e.target.closest('.penalty-dot')) hideTooltip();
   });
   document.addEventListener('touchstart', e => {
-    if (!e.target.closest('.penalty-dot')) hideTooltip();
+    if (!e.target.closest('.penalty-dot') && !e.target.closest('#tooltip')) hideTooltip();
   }, { passive: true });
 });
